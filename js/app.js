@@ -15,14 +15,6 @@ import {
 import { createSubscriptionCard } from "../components/SubscriptionCard.js";
 import { initCharts, updateCharts } from "./charts.js";
 
-// Session check
-const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-if (sessionError || !session) {
-  window.location.replace("auth.html");
-}
-
-const currentUser = session ? session.user : null;
-
 // Setup Base Date for relative calculations: Today
 const BASE_DATE = new Date();
 BASE_DATE.setHours(0,0,0,0);
@@ -39,36 +31,49 @@ const state = {
   currentCalendarYear: BASE_DATE.getFullYear()
 };
 
+let currentUser = null;
+
 /* ==========================================
    INITIALIZATION & DB STORAGE
    ========================================== */
 async function init() {
-  if (!currentUser) return;
-
-  // Set initial loading skeleton effect for subscriptions
-  showSkeletonLoader();
-
   try {
-    await loadStateFromDB(currentUser.id);
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError || !session) {
+      window.location.replace("auth.html");
+      return;
+    }
+
+    currentUser = session.user;
+
+    // Set initial loading skeleton effect for subscriptions
+    showSkeletonLoader();
+
+    try {
+      await loadStateFromDB(currentUser.id);
+    } catch (error) {
+      showToast("Load Error", error.message, "error");
+    }
+
+    applyTheme();
+    setupUIEventListeners();
+
+    // Run initial calculations & UI renders
+    setTimeout(async () => {
+      hideSkeletonLoader();
+      updateDashboardMetrics();
+      renderSubscriptionsList();
+      renderCalendar();
+      renderNotificationsDrawer();
+      await checkUpcomingRenewalsAndNotify();
+      
+      // Initialize charts
+      initCharts(state.subscriptions, state.budgetLimit, state.theme);
+    }, 600); // Small delay to show off beautiful skeleton loader
   } catch (error) {
-    showToast("Load Error", error.message, "error");
+    console.error("Initialization failed:", error);
+    window.location.replace("auth.html");
   }
-
-  applyTheme();
-  setupUIEventListeners();
-
-  // Run initial calculations & UI renders
-  setTimeout(async () => {
-    hideSkeletonLoader();
-    updateDashboardMetrics();
-    renderSubscriptionsList();
-    renderCalendar();
-    renderNotificationsDrawer();
-    await checkUpcomingRenewalsAndNotify();
-    
-    // Initialize charts
-    initCharts(state.subscriptions, state.budgetLimit, state.theme);
-  }, 600); // Small delay to show off beautiful skeleton loader
 }
 
 const mapDBToSubscription = (row) => ({
