@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SubTrack – Subscription Tracker Dashboard</title>
+  <meta name="description" content="Manage, track, and optimize your monthly SaaS and media subscriptions with SubTrack.">
+  
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="./css/style.css">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- ==========================================
+         SIDEBAR NAVIGATION
+         ========================================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="#" class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-layer-group"></i>
+          </div>
+          <span class="brand-text">SubTrack</span>
+        </a>
+        <button class="sidebar-toggle-btn" id="sidebar-toggle" aria-label="Toggle Sidebar">
+          <i class="fa-solid fa-chevron-left" id="toggle-icon"></i>
+        </button>
+      </div>
+      
+      <nav style="flex: 1; display: flex; flex-direction: column;">
+        <ul class="sidebar-menu">
+          <li class="menu-item active" data-tab="dashboard">
+            <a href="#" class="menu-link">
+              <i class="fa-solid fa-chart-pie"></i>
+              <span class="menu-text">Dashboard</span>
+            </a>
+          </li>
+          <li class="menu-item" data-tab="subscriptions">
+            <a href="#" class="menu-link">
+              <i class="fa-solid fa-credit-card"></i>
+              <span class="menu-text">Subscriptions</span>
+            </a>
+          </li>
+          <li class="menu-item" data-tab="analytics">
+            <a href="#" class="menu-link">
+              <i class="fa-solid fa-chart-line"></i>
+              <span class="menu-text">Analytics</span>
+            </a>
+          </li>
+          <li class="menu-item" data-tab="calendar">
+            <a href="#" class="menu-link">
+              <i class="fa-solid fa-calendar-days"></i>
+              <span class="menu-text">Calendar</span>
+            </a>
+          </li>
+          <li class="menu-item" data-tab="settings">
+            <a href="#" class="menu-link">
+              <i class="fa-solid fa-sliders"></i>
+              <span class="menu-text">Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Sidebar User Profile -->
+      <div class="sidebar-footer">
+        <img src="" alt="Avatar" class="profile-avatar" id="sidebar-avatar">
+        <div class="profile-info" id="sidebar-profile-info">
+          <span class="profile-name" id="sidebar-name">Loading...</span>
+          <span class="profile-role" id="sidebar-email">Loading...</span>
+        </div>
+        <button class="profile-menu-trigger" id="profile-dropdown-trigger" aria-label="Profile Actions">
+          <i class="fa-solid fa-angle-up"></i>
+        </button>
+        
+        <!-- Profile Dropdown Menu -->
+        <div class="profile-dropdown-menu" id="profile-dropdown">
+          <div class="dropdown-header-info">
+            <div class="dropdown-user-name" id="dropdown-name">Name</div>
+            <div class="dropdown-user-email" id="dropdown-email">Email</div>
+          </div>
+          <button class="dropdown-item" id="btn-edit-profile-menu"><i class="fa-solid fa-user-gear"></i> Edit Profile</button>
+          <button class="dropdown-item" id="btn-edit-budget-menu"><i class="fa-solid fa-wallet"></i> Set Budget</button>
+          <button class="dropdown-item delete" id="btn-reset-data"><i class="fa-solid fa-trash-arrow-up"></i> Reset App</button>
+          <button class="dropdown-item" id="btn-sign-out"><i class="fa-solid fa-right-from-bracket"></i> Sign out</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==========================================
+         MAIN CONTENT FRAME
+         ========================================== -->
+    <main class="main-content">
+      
+      <!-- HEADER -->
+      <header class="main-header">
+        <div class="header-left">
+          <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Toggle Sidebar Menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <h1 class="page-title" id="page-current-title">Dashboard</h1>
+        </div>
+        
+        <div class="header-right">
+          <!-- Light/Dark Toggle -->
+          <button class="header-action-btn" id="theme-toggle" aria-label="Toggle Color Theme">
+            <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+          </button>
+          
+          <!-- Notifications Bell -->
+          <button class="header-action-btn" id="notification-drawer-toggle" aria-label="Notifications Drawer">
+            <i class="fa-solid fa-bell"></i>
+            <span class="btn-badge" id="notifications-badge" style="display: none;">0</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- ==========================================
+           1. DASHBOARD HOME SECTION
+           ========================================== -->
+      <section class="dashboard-section active" id="section-dashboard">
+        <!-- Stats Widgets -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-info">
+              <span class="stat-label">Monthly Expense</span>
+              <div class="stat-value" id="stat-monthly-spend">$0.00</div>
+              <span class="stat-subtext" id="stat-spending-percentage">
+                <i class="fa-solid fa-arrow-right"></i> Calculating...
+              </span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-dollar-sign"></i>
+            </div>
+          </div>
+          
+          <div class="stat-card purple">
+            <div class="stat-info">
+              <span class="stat-label">Active Subscriptions</span>
+              <div class="stat-value" id="stat-active-count">0</div>
+              <span class="stat-subtext" id="stat-active-billing-info">0 monthly, 0 yearly</span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-box-open"></i>
+            </div>
+          </div>
+
+          <div class="stat-card green">
+            <div class="stat-info">
+              <span class="stat-label">Upcoming Renewals</span>
+              <div class="stat-value" id="stat-upcoming-count">0</div>
+              <span class="stat-subtext">Within next 7 days</span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-calendar-check"></i>
+            </div>
+          </div>
+
+          <div class="stat-card red">
+            <div class="stat-info">
+              <span class="stat-label">Highest Premium</span>
+              <div class="stat-value" id="stat-highest-name">N/A</div>
+              <span class="stat-subtext" id="stat-highest-cost">$0.00/mo</span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-gem"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Layout Grid -->
+        <div class="dashboard-overview-grid">
+          <!-- Left: Budget Progress & Spending Insights -->
+          <div class="overview-card">
+            <div class="card-header">
+              <h2 class="card-title"><i class="fa-solid fa-wallet" style="color: var(--primary);"></i> Budget & Insights</h2>
+              <a href="#" class="card-action-link" id="btn-adjust-budget">Edit Budget</a>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="budget-progress-container">
+              <div class="budget-stats">
+                <span class="budget-spent" id="budget-spent-label">Spent: $0.00</span>
+                <span class="budget-limit" id="budget-limit-label">Budget: $200.00</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-bar" id="budget-progress-bar"></div>
+              </div>
+              <div class="budget-status-message" id="budget-status-message">
+                You've used 0% of your budget.
+              </div>
+            </div>
+
+            <!-- Spend Insights -->
+            <div class="insights-list" id="insights-container">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Right: Quick Actions -->
+          <div class="overview-card" style="justify-content: flex-start;">
+            <div class="card-header">
+              <h2 class="card-title"><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--secondary);"></i> Quick Actions</h2>
+            </div>
+            <div class="quick-actions">
+              <button class="btn-quick" id="btn-quick-add">
+                <i class="fa-solid fa-circle-plus"></i>
+                Add New
+              </button>
+              <button class="btn-quick" id="btn-quick-calendar">
+                <i class="fa-solid fa-calendar"></i>
+                Calendar
+              </button>
+              <button class="btn-quick" id="btn-quick-export">
+                <i class="fa-solid fa-file-export"></i>
+                Export CSV
+              </button>
+              <button class="btn-quick" id="btn-quick-insights">
+                <i class="fa-solid fa-chart-column"></i>
+                Analytics
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom: Small Trend Graph preview -->
+        <div class="chart-card">
+          <div class="card-header">
+            <h3 class="chart-card-title">Cash Flow & Cumulative Outflow</h3>
+          </div>
+          <div class="chart-container" style="height: 200px;">
+            <canvas id="budgetChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           2. SUBSCRIPTION MANAGEMENT SECTION
+           ========================================== */ -->
+      <section class="dashboard-section" id="section-subscriptions">
+        <!-- Search, Filter and Sort bar -->
+        <div class="search-filter-bar">
+          <div class="search-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" class="search-input" id="search-input" placeholder="Search subscriptions by name...">
+          </div>
+          
+          <select class="filter-select" id="filter-category">
+            <option value="all">All Categories</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Music">Music</option>
+            <option value="SaaS">SaaS</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Work">Work</option>
+            <option value="News">News</option>
+            <option value="Finance">Finance</option>
+            <option value="Other">Other</option>
+          </select>
+          
+          <select class="filter-select" id="filter-cycle">
+            <option value="all">All Cycles</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </select>
+          
+          <select class="filter-select" id="sort-order">
+            <option value="date-soon">Renewal (Soonest)</option>
+            <option value="date-late">Renewal (Latest)</option>
+            <option value="price-high">Price (High to Low)</option>
+            <option value="price-low">Price (Low to High)</option>
+            <option value="name-az">Name (A-Z)</option>
+            <option value="name-za">Name (Z-A)</option>
+          </select>
+
+          <button class="btn-primary" id="btn-add-subscription">
+            <i class="fa-solid fa-plus"></i> Add New
+          </button>
+        </div>
+
+        <!-- Subscriptions Loading Skeleton -->
+        <div class="subscriptions-grid" id="subscriptions-skeleton" style="display: none;">
+          <div class="skeleton-card">
+            <div class="skeleton-shimmer"></div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="skeleton-circle"></div>
+              <div>
+                <div class="skeleton-line title" style="margin-bottom: 6px;"></div>
+                <div class="skeleton-line subtitle"></div>
+              </div>
+            </div>
+            <div class="skeleton-line" style="width: 100%; height: 24px; margin: 12px 0;"></div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+              <div class="skeleton-line price"></div>
+              <div class="skeleton-line date"></div>
+            </div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-shimmer"></div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="skeleton-circle"></div>
+              <div>
+                <div class="skeleton-line title" style="margin-bottom: 6px;"></div>
+                <div class="skeleton-line subtitle"></div>
+              </div>
+            </div>
+            <div class="skeleton-line" style="width: 100%; height: 24px; margin: 12px 0;"></div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+              <div class="skeleton-line price"></div>
+              <div class="skeleton-line date"></div>
+            </div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-shimmer"></div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="skeleton-circle"></div>
+              <div>
+                <div class="skeleton-line title" style="margin-bottom: 6px;"></div>
+                <div class="skeleton-line subtitle"></div>
+              </div>
+            </div>
+            <div class="skeleton-line" style="width: 100%; height: 24px; margin: 12px 0;"></div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+              <div class="skeleton-line price"></div>
+              <div class="skeleton-line date"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subscriptions Grid Container -->
+        <div class="subscriptions-grid" id="subscriptions-container">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Empty State UI -->
+        <div class="empty-state-container" id="subscriptions-empty-state" style="display: none;">
+          <!-- Inline modern SVG empty space illustration -->
+          <svg class="empty-state-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="70" stroke="var(--border-color)" stroke-width="2" stroke-dasharray="6 6" />
+            <rect x="70" y="70" width="60" height="60" rx="12" fill="var(--bg-hover)" stroke="var(--border-color)" stroke-width="2" />
+            <circle cx="100" cy="100" r="16" fill="var(--primary)" opacity="0.15" />
+            <path d="M100 92V108M92 100H108" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" />
+            <path d="M60 140C60 140 75 125 100 125C125 125 140 140 140 140" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <h3 class="empty-state-title">No subscriptions found</h3>
+          <p class="empty-state-desc">Get started by creating your first subscription. We will track renewal intervals and calculate insights automatically!</p>
+          <button class="btn-primary" id="btn-empty-state-add"><i class="fa-solid fa-plus"></i> Add First Subscription</button>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           3. ANALYTICS & CHARTS SECTION
+           ========================================== -->
+      <section class="dashboard-section" id="section-analytics">
+        <div class="analytics-grid">
+          
+          <!-- Column 1: Monthly cash outflow -->
+          <div class="chart-card analytics-full-width">
+            <h3 class="chart-card-title"><i class="fa-solid fa-calendar-days" style="color: var(--primary);"></i> 12-Month Outflow Cashflow Projection (2026)</h3>
+            <div class="chart-container" style="height: 280px;">
+              <canvas id="trendChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Column 2: Category Pie -->
+          <div class="chart-card">
+            <h3 class="chart-card-title"><i class="fa-solid fa-circle-notch" style="color: var(--secondary);"></i> Cost Distribution by Category</h3>
+            <div class="chart-container">
+              <canvas id="categoryChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Column 3: Stats Summary Panel -->
+          <div class="chart-card" style="justify-content: space-between;">
+            <h3 class="chart-card-title"><i class="fa-solid fa-receipt" style="color: var(--accent);"></i> Annual Financial Projections</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 16px; flex: 1; justify-content: center;">
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                <span style="color: var(--text-secondary); font-size: 0.9rem;">Estimated Annual Total:</span>
+                <strong style="color: var(--text-primary); font-size: 1.1rem;" id="analytics-annual-cost">$0.00</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                <span style="color: var(--text-secondary); font-size: 0.9rem;">Normalized Monthly Equivalent:</span>
+                <strong style="color: var(--text-primary); font-size: 1.1rem;" id="analytics-monthly-normalized">$0.00</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                <span style="color: var(--text-secondary); font-size: 0.9rem;">Average Cost / Subscription:</span>
+                <strong style="color: var(--text-primary); font-size: 1.1rem;" id="analytics-average-cost">$0.00</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-secondary); font-size: 0.9rem;">Highest Billing Mode:</span>
+                <strong style="color: var(--text-primary); font-size: 1.1rem;" id="analytics-billing-split">0% Monthly</strong>
+              </div>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.75rem; text-align: center;">
+              * Normalization scales yearly subscriptions down to their monthly value.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           4. CALENDAR VIEW SECTION
+           ========================================== -->
+      <section class="dashboard-section" id="section-calendar">
+        <div class="calendar-wrapper">
+          <div class="calendar-header">
+            <div class="calendar-title-nav">
+              <button class="calendar-nav-btn" id="calendar-prev-month" aria-label="Previous Month">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <h2 class="calendar-month-year" id="calendar-month-year-label">May 2026</h2>
+              <button class="calendar-nav-btn" id="calendar-next-month" aria-label="Next Month">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+            <button class="btn-secondary" id="calendar-today-btn" style="height: 32px; padding: 0 12px; font-size: 0.8rem;">Today</button>
+          </div>
+          
+          <div class="calendar-grid" id="calendar-days-container">
+            <!-- Weekdays header & Days cells will be generated dynamically in JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           5. SETTINGS & PROFILE SECTION
+           ========================================== -->
+      <section class="dashboard-section" id="section-settings">
+        <div class="settings-grid">
+          
+          <!-- General Settings -->
+          <div class="settings-card">
+            <h3 class="chart-card-title"><i class="fa-solid fa-screwdriver-wrench" style="color: var(--primary); margin-right: 8px;"></i> General Preferences</h3>
+            
+            <div class="settings-row">
+              <div class="settings-info">
+                <span class="settings-label">Dark Theme Mode</span>
+                <span class="settings-desc">Toggle between high-contrast dark palette and soft light styling.</span>
+              </div>
+              <div class="settings-control">
+                <label class="switch">
+                  <input type="checkbox" id="settings-theme-toggle" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-info">
+                <span class="settings-label">Monthly Expense Budget</span>
+                <span class="settings-desc">Set your global cost alert boundary. Default is $200.00.</span>
+              </div>
+              <div class="settings-control">
+                <button class="btn-secondary" id="settings-btn-budget">Edit Budget</button>
+              </div>
+            </div>
+            
+            <div class="settings-row">
+              <div class="settings-info">
+                <span class="settings-label">Pre-populate Demo Data</span>
+                <span class="settings-desc">Fills empty local storage with premium pre-configured sample SaaS and streaming entries.</span>
+              </div>
+              <div class="settings-control">
+                <button class="btn-export" id="settings-btn-seed"><i class="fa-solid fa-database"></i> Seed App</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data backup/Profile -->
+          <div class="settings-card">
+            <h3 class="chart-card-title"><i class="fa-solid fa-file-shield" style="color: var(--secondary); margin-right: 8px;"></i> Data Export & Account</h3>
+            
+            <div class="settings-row">
+              <div class="settings-info">
+                <span class="settings-label">User Information Profile</span>
+                <span class="settings-desc">Customize your dashboard username, address, and profile picture avatar.</span>
+              </div>
+              <div class="settings-control">
+                <button class="btn-secondary" id="settings-btn-profile">Edit Profile</button>
+              </div>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-info">
+                <span class="settings-label">Backup Data Options</span>
+                <span class="settings-desc">Export details to spreadsheet CSV format or raw configurations JSON file.</span>
+              </div>
+              <div class="settings-control" style="gap: 8px;">
+                <button class="btn-export" id="settings-btn-export-csv"><i class="fa-solid fa-file-csv"></i> CSV</button>
+                <button class="btn-export" id="settings-btn-export-json"><i class="fa-solid fa-file-code"></i> JSON</button>
+              </div>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-info">
+                <span class="settings-label" style="color: var(--danger);">Reset Application Cache</span>
+                <span class="settings-desc">Wipe all configured records from local storage. Cannot be undone.</span>
+              </div>
+              <div class="settings-control">
+                <button class="btn-danger" style="height: 38px; padding: 0 16px; font-size: 0.85rem;" id="settings-btn-wipe">Wipe Cache</button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+
+      <!-- FLOATING ACTION BUTTON (FAB) -->
+      <button class="fab-btn" id="fab-add-btn" aria-label="Add Subscription">
+        <i class="fa-solid fa-plus"></i>
+      </button>
+
+    </main>
+
+    <!-- ==========================================
+         NOTIFICATION DRAWER (SLIDE IN)
+         ========================================== -->
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+    <div class="notifications-drawer" id="notifications-drawer">
+      <div class="drawer-header">
+        <h3 class="drawer-title"><i class="fa-solid fa-bell-slash" style="margin-right: 8px; font-size: 0.95rem; color: var(--primary);"></i> Notifications Drawer</h3>
+        <button class="drawer-close" id="drawer-close-btn" aria-label="Close Notifications">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div class="drawer-body" id="drawer-notifications-list">
+        <!-- Rendered dynamically in JS -->
+      </div>
+      
+      <div class="drawer-footer">
+        <button class="btn-text-danger" id="drawer-clear-all-btn">Clear All Logs</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Chart.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Application Logic Modules -->
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

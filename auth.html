@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SubTrack – Sign In / Sign Up</title>
+  <meta name="description" content="Sign in or create an account for SubTrack Subscription Tracker.">
+  
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="./css/style.css">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: var(--bg-app);
+      font-family: var(--font-sans);
+    }
+    
+    .auth-container {
+      width: 100%;
+      max-width: 440px;
+      padding: 20px;
+    }
+    
+    .auth-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-premium);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    
+    .auth-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 1.75rem;
+      letter-spacing: -0.025em;
+      color: var(--text-primary);
+    }
+    
+    .brand-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      font-size: 1.15rem;
+      box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+    }
+    
+    .auth-subtitle {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+    
+    .auth-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 4px;
+    }
+    
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: all var(--transition-fast);
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+    
+    .auth-tab:hover {
+      color: var(--text-primary);
+    }
+    
+    .auth-tab.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--primary);
+    }
+    
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .auth-form.hidden {
+      display: none;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .form-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    
+    .form-input {
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      transition: all var(--transition-fast);
+    }
+    
+    .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--border-focus);
+    }
+    
+    .forgot-password-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -8px;
+    }
+    
+    .forgot-password-link {
+      font-size: 0.85rem;
+      color: var(--primary);
+      font-weight: 500;
+      cursor: pointer;
+      transition: color var(--transition-fast);
+    }
+    
+    .forgot-password-link:hover {
+      text-decoration: underline;
+      color: var(--primary-hover);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--text-on-primary);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+      transition: all var(--transition-fast);
+      width: 100%;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
+      background: linear-gradient(135deg, var(--primary-hover), var(--secondary-hover));
+    }
+    
+    .btn-primary:active {
+      transform: translateY(1px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+    <div class="auth-card">
+      
+      <div class="auth-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-layer-group"></i>
+          </div>
+          <span class="brand-text">SubTrack</span>
+        </div>
+        <p class="auth-subtitle" id="auth-subtitle">Welcome back! Please enter your details.</p>
+      </div>
+      
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-signin">Sign in</button>
+        <button class="auth-tab" id="tab-signup">Create account</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="signin-form" class="auth-form">
+        <div class="form-group">
+          <label class="form-label" for="signin-email">Email Address</label>
+          <input type="email" id="signin-email" class="form-input" placeholder="e.g. name@example.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signin-password">Password</label>
+          <input type="password" id="signin-password" class="form-input" placeholder="••••••••" required>
+        </div>
+        <div class="forgot-password-container">
+          <span class="forgot-password-link" id="link-forgot-password">Forgot password?</span>
+        </div>
+        <button type="submit" class="btn-primary">Sign in</button>
+      </form>
+
+      <!-- Create Account Form -->
+      <form id="signup-form" class="auth-form hidden">
+        <div class="form-group">
+          <label class="form-label" for="signup-name">Full Name</label>
+          <input type="text" id="signup-name" class="form-input" placeholder="e.g. John Doe" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-email">Email Address</label>
+          <input type="email" id="signup-email" class="form-input" placeholder="e.g. name@example.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-password">Password</label>
+          <input type="password" id="signup-password" class="form-input" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-primary">Create account</button>
+      </form>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import supabase from './js/supabase.js';
+    import { showToast } from './components/Toast.js';
+
+    // Page Elements
+    const tabSignin = document.getElementById('tab-signin');
+    const tabSignup = document.getElementById('tab-signup');
+    const signinForm = document.getElementById('signin-form');
+    const signupForm = document.getElementById('signup-form');
+    const authSubtitle = document.getElementById('auth-subtitle');
+    const forgotPasswordLink = document.getElementById('link-forgot-password');
+    const signinEmailInput = document.getElementById('signin-email');
+
+    // Page Load: Redirect if session already exists
+    const checkActiveSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (session) {
+        window.location.replace('index.html');
+      }
+    };
+    checkActiveSession();
+
+    // Tab Switching Logic
+    tabSignin.addEventListener('click', () => {
+      tabSignin.classList.add('active');
+      tabSignup.classList.remove('active');
+      signinForm.classList.remove('hidden');
+      signupForm.classList.add('hidden');
+      authSubtitle.textContent = 'Welcome back! Please enter your details.';
+    });
+
+    tabSignup.addEventListener('click', () => {
+      tabSignup.classList.add('active');
+      tabSignin.classList.remove('active');
+      signupForm.classList.remove('hidden');
+      signinForm.classList.add('hidden');
+      authSubtitle.textContent = 'Join SubTrack to manage your subscriptions.';
+    });
+
+    // Sign In Submit Handler
+    signinForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = signinEmailInput.value.trim();
+      const password = document.getElementById('signin-password').value;
+
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        
+        showToast('Success', 'Successfully signed in!', 'success', 2000);
+        setTimeout(() => {
+          window.location.replace('index.html');
+        }, 1000);
+      } catch (error) {
+        showToast('Authentication Error', error.message, 'error', 4000);
+      }
+    });
+
+    // Create Account Submit Handler
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              name: name
+            }
+          }
+        });
+        if (error) throw error;
+
+        // If email confirmation is required, Supabase might not immediately log them in,
+        // but typically user gets logged in. Let's check if session was created:
+        if (data.session) {
+          showToast('Success', 'Account created successfully!', 'success', 2000);
+          setTimeout(() => {
+            window.location.replace('index.html');
+          }, 1000);
+        } else {
+          showToast('Verification Sent', 'Please check your email to verify your account.', 'info', 5000);
+        }
+      } catch (error) {
+        showToast('Registration Error', error.message, 'error', 4000);
+      }
+    });
+
+    // Forgot Password Handler
+    forgotPasswordLink.addEventListener('click', async () => {
+      const email = signinEmailInput.value.trim();
+      if (!email) {
+        showToast('Password Reset', 'Please enter your email address in the Sign In form first.', 'warning', 4000);
+        signinEmailInput.focus();
+        return;
+      }
+
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + '/auth.html'
+        });
+        if (error) throw error;
+
+        showToast('Reset Link Sent', 'Password reset instructions have been sent to your email.', 'success', 6000);
+      } catch (error) {
+        showToast('Reset Error', error.message, 'error', 4000);
+      }
+    });
+  </script>
+
+</body>
+</html>
