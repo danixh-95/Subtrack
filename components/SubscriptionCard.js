@@ -7,10 +7,11 @@ export function createSubscriptionCard(sub, onEdit, onDelete) {
   card.className = "sub-card";
   card.setAttribute("data-id", sub.id);
 
+
   // Format Price
-  const formattedPrice = new Intl.NumberFormat("en-US", {
+  const formattedPrice = new Intl.NumberFormat("en-PK", {
     style: "currency",
-    currency: "USD"
+    currency: "PKR"
   }).format(sub.price);
 
   // Format Renewal Date

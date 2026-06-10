@@ -116,7 +116,7 @@ export function initCharts(subscriptions, budgetLimit, theme) {
             padding: 12,
             displayColors: false,
             callbacks: {
-              label: (context) => `Projected Outflow: $${context.raw.toFixed(2)}`
+              label: (context) => `Projected Outflow: ₨ ${context.raw.toLocaleString("en-PK", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
             }
           }
         },
@@ -130,7 +130,7 @@ export function initCharts(subscriptions, budgetLimit, theme) {
             ticks: { 
               color: colors.text, 
               font: { family: "Inter" },
-              callback: (value) => `$${value}`
+              callback: (value) => `₨ ${value.toLocaleString("en-PK")}`
             }
           }
         }
@@ -192,7 +192,7 @@ export function initCharts(subscriptions, budgetLimit, theme) {
             borderWidth: 1,
             padding: 12,
             callbacks: {
-              label: (context) => ` Monthly Equivalent: $${context.raw.toFixed(2)}`
+              label: (context) => ` Monthly Equivalent: ₨ ${context.raw.toLocaleString("en-PK", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
             }
           }
         },
@@ -258,7 +258,7 @@ export function initCharts(subscriptions, budgetLimit, theme) {
             borderWidth: 1,
             padding: 12,
             callbacks: {
-              label: (context) => ` ${context.dataset.label}: $${context.raw.toFixed(2)}`
+              label: (context) => ` ${context.dataset.label}: ₨ ${context.raw.toLocaleString("en-PK", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
             }
           }
         },
@@ -272,7 +272,7 @@ export function initCharts(subscriptions, budgetLimit, theme) {
             ticks: { 
               color: colors.text, 
               font: { family: "Inter" },
-              callback: (value) => `$${value}`
+              callback: (value) => `₨ ${value.toLocaleString("en-PK")}`
             }
           }
         }

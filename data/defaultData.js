@@ -2,7 +2,7 @@ export const defaultSubscriptions = [
   {
     id: "netflix-id",
     name: "Netflix",
-    price: 15.49,
+    price: 1500.00,
     billingCycle: "monthly",
     startDate: "2024-01-15",
     renewalDate: "2026-05-26", // Expiring in 3 days
@@ -14,7 +14,7 @@ export const defaultSubscriptions = [
   {
     id: "spotify-id",
     name: "Spotify Premium",
-    price: 10.99,
+    price: 350.00,
     billingCycle: "monthly",
     startDate: "2023-06-10",
     renewalDate: "2026-05-28", // Expiring in 5 days
@@ -26,7 +26,7 @@ export const defaultSubscriptions = [
   {
     id: "chatgpt-id",
     name: "ChatGPT Plus",
-    price: 20.00,
+    price: 5600.00,
     billingCycle: "monthly",
     startDate: "2024-03-01",
     renewalDate: "2026-06-15",
@@ -38,7 +38,7 @@ export const defaultSubscriptions = [
   {
     id: "adobe-id",
     name: "Adobe Creative Cloud",
-    price: 54.99,
+    price: 15000.00,
     billingCycle: "monthly",
     startDate: "2023-11-20",
     renewalDate: "2026-05-24", // Expiring tomorrow!
@@ -50,7 +50,7 @@ export const defaultSubscriptions = [
   {
     id: "youtube-id",
     name: "YouTube Premium",
-    price: 13.99,
+    price: 500.00,
     billingCycle: "monthly",
     startDate: "2024-02-14",
     renewalDate: "2026-05-30", // Expiring in 7 days
@@ -62,7 +62,7 @@ export const defaultSubscriptions = [
   {
     id: "aws-id",
     name: "Amazon Web Services",
-    price: 45.00,
+    price: 12500.00,
     billingCycle: "monthly",
     startDate: "2024-05-01",
     renewalDate: "2026-06-02",
@@ -74,7 +74,7 @@ export const defaultSubscriptions = [
   {
     id: "copilot-id",
     name: "GitHub Copilot",
-    price: 10.00,
+    price: 2800.00,
     billingCycle: "monthly",
     startDate: "2024-04-10",
     renewalDate: "2026-06-10",
@@ -86,7 +86,7 @@ export const defaultSubscriptions = [
   {
     id: "ms365-id",
     name: "Microsoft 365",
-    price: 99.99,
+    price: 28000.00,
     billingCycle: "yearly",
     startDate: "2023-11-12",
     renewalDate: "2026-11-12",
@@ -97,4 +97,4 @@ export const defaultSubscriptions = [
   }
 ];
 
-export const defaultBudget = 200;
+export const defaultBudget = 50000;

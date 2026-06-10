@@ -380,9 +380,9 @@ function updateDashboardMetrics() {
   
   const spendValEl = document.getElementById("stat-monthly-spend");
   if (spendValEl) {
-    spendValEl.textContent = new Intl.NumberFormat("en-US", {
+    spendValEl.textContent = new Intl.NumberFormat("en-PK", {
       style: "currency",
-      currency: "USD"
+      currency: "PKR"
     }).format(totalMonthlySpend);
   }
 
@@ -390,7 +390,7 @@ function updateDashboardMetrics() {
   const budgetPercent = state.budgetLimit > 0 ? Math.round((totalMonthlySpend / state.budgetLimit) * 100) : 0;
   const percentageEl = document.getElementById("stat-spending-percentage");
   if (percentageEl) {
-    percentageEl.innerHTML = `<i class="fa-solid fa-arrow-right"></i> ${budgetPercent}% of monthly budget ($${state.budgetLimit.toFixed(0)})`;
+    percentageEl.innerHTML = `<i class="fa-solid fa-arrow-right"></i> ${budgetPercent}% of monthly budget (₨ ${state.budgetLimit.toLocaleString("en-PK")})`;
     if (budgetPercent > 100) {
       percentageEl.style.color = "var(--danger)";
     } else if (budgetPercent > 80) {
@@ -443,14 +443,14 @@ function updateDashboardMetrics() {
   if (highestSub) {
     if (highestNameEl) highestNameEl.textContent = highestSub.name;
     if (highestCostEl) {
-      highestCostEl.textContent = `${new Intl.NumberFormat("en-US", {
+      highestCostEl.textContent = `${new Intl.NumberFormat("en-PK", {
         style: "currency",
-        currency: "USD"
+        currency: "PKR"
       }).format(highestSub.price)}/${highestSub.billingCycle === 'monthly' ? 'mo' : 'yr'}`;
     }
   } else {
     if (highestNameEl) highestNameEl.textContent = "N/A";
-    if (highestCostEl) highestCostEl.textContent = "$0.00/mo";
+    if (highestCostEl) highestCostEl.textContent = "₨0.00/mo";
   }
 
   // 5. Update Profile Cards in DOM
@@ -493,8 +493,8 @@ function updateBudgetProgressBar(spent) {
 
   if (!bar || !spentLabel || !limitLabel || !statusMsg) return;
 
-  const formattedSpent = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(spent);
-  const formattedLimit = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(state.budgetLimit);
+  const formattedSpent = new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR" }).format(spent);
+  const formattedLimit = new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR" }).format(state.budgetLimit);
 
   spentLabel.textContent = `Spent: ${formattedSpent}`;
   limitLabel.textContent = `Budget: ${formattedLimit}`;
@@ -511,7 +511,7 @@ function updateBudgetProgressBar(spent) {
 
   if (ratio > 100) {
     bar.classList.add("danger");
-    statusMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color: var(--danger);"></i> Overbudget by <strong>$${(spent - state.budgetLimit).toFixed(2)}</strong>! Try reviewing unused subscriptions.`;
+    statusMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color: var(--danger);"></i> Overbudget by <strong>₨ ${(spent - state.budgetLimit).toLocaleString("en-PK")}</strong>! Try reviewing unused subscriptions.`;
     statusMsg.style.color = "var(--danger)";
   } else if (ratio > 80) {
     bar.classList.add("warning");
@@ -536,7 +536,7 @@ function generateSpendingInsights(totalSpend) {
       type: "danger",
       icon: "fa-solid fa-circle-exclamation",
       title: "Budget Cap Breached",
-      desc: `Your active subscriptions ($${totalSpend.toFixed(2)}) exceed your monthly limit ($${state.budgetLimit.toFixed(0)}) by $${(totalSpend - state.budgetLimit).toFixed(2)}.`
+      desc: `Your active subscriptions (₨ ${totalSpend.toLocaleString("en-PK")}) exceed your monthly limit (₨ ${state.budgetLimit.toLocaleString("en-PK")}) by ₨ ${(totalSpend - state.budgetLimit).toLocaleString("en-PK")}.`
     });
   } else if (totalSpend > state.budgetLimit * 0.8) {
     insights.push({
@@ -550,7 +550,7 @@ function generateSpendingInsights(totalSpend) {
       type: "success",
       icon: "fa-solid fa-thumbs-up",
       title: "Healthy Budget Allocation",
-      desc: `You are currently saving $${(state.budgetLimit - totalSpend).toFixed(2)} of your set monthly limit. Good job!`
+      desc: `You are currently saving ₨ ${(state.budgetLimit - totalSpend).toLocaleString("en-PK")} of your set monthly limit. Good job!`
     });
   }
 
@@ -576,7 +576,7 @@ function generateSpendingInsights(totalSpend) {
       type: "primary",
       icon: "fa-solid fa-chart-pie",
       title: `Highest Spending on ${topCategory}`,
-      desc: `${topCategory} accounts for ${percent}% of your monthly expenses ($${topCost.toFixed(2)} equivalent).`
+      desc: `${topCategory} accounts for ${percent}% of your monthly expenses (₨ ${topCost.toLocaleString("en-PK")} equivalent).`
     });
   }
 
@@ -593,14 +593,14 @@ function generateSpendingInsights(totalSpend) {
 
   if (soonestSub) {
     let type = "primary";
-    let alertMsg = `Your next bill is ${soonestSub.name} ($${soonestSub.price.toFixed(2)}) due in ${minDays} days.`;
+    let alertMsg = `Your next bill is ${soonestSub.name} (₨ ${soonestSub.price.toLocaleString("en-PK")}) due in ${minDays} days.`;
     
     if (minDays === 0) {
       type = "danger";
-      alertMsg = `Important: ${soonestSub.name} ($${soonestSub.price.toFixed(2)}) bills today!`;
+      alertMsg = `Important: ${soonestSub.name} (₨ ${soonestSub.price.toLocaleString("en-PK")}) bills today!`;
     } else if (minDays === 1) {
       type = "warning";
-      alertMsg = `Important: ${soonestSub.name} ($${soonestSub.price.toFixed(2)}) bills tomorrow.`;
+      alertMsg = `Important: ${soonestSub.name} (₨ ${soonestSub.price.toLocaleString("en-PK")}) bills tomorrow.`;
     }
 
     insights.push({
@@ -726,13 +726,13 @@ function renderAnalyticsSummaries() {
   const totalMonthlySpend = getNormalizedMonthlySpend();
   const annualTotal = totalMonthlySpend * 12;
 
-  annualTotalEl.textContent = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(annualTotal);
-  monthlyNormalizedEl.textContent = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(totalMonthlySpend);
+  annualTotalEl.textContent = new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR" }).format(annualTotal);
+  monthlyNormalizedEl.textContent = new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR" }).format(totalMonthlySpend);
 
   // Avg Subscription price (normalized)
   const count = state.subscriptions.length;
   const averageCost = count > 0 ? (totalMonthlySpend / count) : 0;
-  avgCostEl.textContent = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(averageCost);
+  avgCostEl.textContent = new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR" }).format(averageCost);
 
   // Billing cycle split ratio
   if (count > 0) {
@@ -826,7 +826,7 @@ function renderCalendar() {
         `;
         
         // Show tooltip details on hover
-        badge.title = `${sub.name} renewal: $${sub.price.toFixed(2)} (${sub.billingCycle})`;
+        badge.title = `${sub.name} renewal: ₨ ${sub.price.toLocaleString("en-PK")} (${sub.billingCycle})`;
         
         // Clicking badge shows the edit modal directly!
         badge.addEventListener("click", (e) => {
@@ -910,7 +910,7 @@ async function checkUpcomingRenewalsAndNotify() {
         subName: sub.name,
         color: sub.color,
         icon: sub.iconClass,
-        message: `Subscription for ${sub.name} is renewing tomorrow ($${sub.price.toFixed(2)}).`
+        message: `Subscription for ${sub.name} is renewing tomorrow (₨ ${sub.price.toLocaleString("en-PK")}).`
       });
     } else if (days === 0) {
       alerts.push({
@@ -919,7 +919,7 @@ async function checkUpcomingRenewalsAndNotify() {
         subName: sub.name,
         color: sub.color,
         icon: sub.iconClass,
-        message: `Subscription for ${sub.name} is renewing today ($${sub.price.toFixed(2)})!`
+        message: `Subscription for ${sub.name} is renewing today (₨ ${sub.price.toLocaleString("en-PK")})!`
       });
     } else if (days > 1 && days <= 3) {
       alerts.push({
@@ -942,7 +942,7 @@ async function checkUpcomingRenewalsAndNotify() {
       subName: "Budget Control",
       color: "var(--danger)",
       icon: "fa-solid fa-triangle-exclamation",
-      message: `Your monthly subscriptions spending ($${monthlySpend.toFixed(2)}) has exceeded your set budget limit ($${state.budgetLimit.toFixed(0)}).`
+      message: `Your monthly subscriptions spending (₨ ${monthlySpend.toLocaleString("en-PK")}) has exceeded your set budget limit (₨ ${state.budgetLimit.toLocaleString("en-PK")}).`
     });
   }
 
@@ -1053,14 +1053,14 @@ async function checkBudgetThreshold() {
         subName: "Budget Exceeded",
         color: "var(--danger)",
         icon: "fa-solid fa-triangle-exclamation",
-        message: `Your monthly subscription spending ($${spend.toFixed(2)}) has exceeded your set budget limit ($${state.budgetLimit.toFixed(0)}).`,
+        message: `Your monthly subscription spending (₨ ${spend.toLocaleString("en-PK")}) has exceeded your set budget limit (₨ ${state.budgetLimit.toLocaleString("en-PK")}).`,
         timestamp: new Date().toISOString(),
         unread: true
       });
       await saveSettings();
       renderNotificationsDrawer();
       updateNotificationsBadge();
-      showToast("Budget Exceeded", `Monthly spending of $${spend.toFixed(2)} is above your budget limit!`, "error", 6000);
+      showToast("Budget Exceeded", `Monthly spending of ₨ ${spend.toLocaleString("en-PK")} is above your budget limit!`, "error", 6000);
     }
   }
 }
@@ -1210,7 +1210,7 @@ function setupUIEventListeners() {
       await saveSettings();
       updateDashboardMetrics();
       updateCharts(state.subscriptions, state.budgetLimit, state.theme);
-      showToast("Budget Restructured", `Monthly spending limit updated to $${newBudget.toFixed(0)}.`, "success");
+      showToast("Budget Restructured", `Monthly spending limit updated to ₨ ${newBudget.toLocaleString("en-PK")}.`, "success");
     });
   });
 
@@ -1246,7 +1246,7 @@ function setupUIEventListeners() {
       await saveSettings();
       updateDashboardMetrics();
       updateCharts(state.subscriptions, state.budgetLimit, state.theme);
-      showToast("Budget Updated", `Monthly budget updated to $${newBudget.toFixed(0)}.`, "success");
+      showToast("Budget Updated", `Monthly budget updated to ₨ ${newBudget.toLocaleString("en-PK")}.`, "success");
     });
   });
 
@@ -1352,7 +1352,7 @@ function setupUIEventListeners() {
       await saveSettings();
       updateDashboardMetrics();
       updateCharts(state.subscriptions, state.budgetLimit, state.theme);
-      showToast("Budget Saved", `Monthly spending limit updated to $${newBudget.toFixed(0)}.`, "success");
+      showToast("Budget Saved", `Monthly spending limit updated to ₨ ${newBudget.toLocaleString("en-PK")}.`, "success");
     });
   });
 

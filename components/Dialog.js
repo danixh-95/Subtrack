@@ -128,7 +128,7 @@ export function openSubscriptionFormModal(sub = null, onSubmit) {
 
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label" for="sub-price">Price ($)</label>
+          <label class="form-label" for="sub-price">Price (₨)</label>
           <input type="number" id="sub-price" class="form-input" placeholder="0.00" step="0.01" min="0" value="${isEdit ? sub.price : ''}" required>
           <span class="form-error" id="error-sub-price">Please enter a valid price.</span>
         </div>
@@ -306,7 +306,7 @@ export function openBudgetModal(currentBudget, onSubmit) {
   const bodyHtml = `
     <form id="budget-form">
       <div class="form-group">
-        <label class="form-label" for="budget-limit-input">Monthly Budget Limit ($)</label>
+        <label class="form-label" for="budget-limit-input">Monthly Budget Limit (₨)</label>
         <input type="number" id="budget-limit-input" class="form-input" min="0" step="10" value="${currentBudget}" required>
         <span class="form-error" id="error-budget-limit">Please enter a valid budget amount.</span>
       </div>
