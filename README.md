@@ -121,7 +121,7 @@ create policy "Allow CRUD for owners" on public.profiles
    ```
 
 4. **Open the App**:
-   Visit `http://localhost:5173` in your browser. Since you are not logged in, you will be redirected to the secure login page (`auth.html`).
+   Visit [subtrack-keep.vercel.app](https://subtrack-keep.vercel.app/) in your browser. Since you are not logged in, you will be redirected to the secure login page (`auth.html`).
 
 ---
 
