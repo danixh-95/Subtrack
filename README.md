@@ -2,6 +2,8 @@
 
 SubTrack is a premium, modern, and beautiful subscription tracking web application. Built with Vanilla JS, modern CSS, and Supabase, it allows users to create accounts, manage their subscription expenses, define monthly budgets, visualize insights via interactive charts, and keep track of payment renewals on a dynamic calendar.
 
+🔗 **Live Demo**: [subtrack-keep.vercel.app](https://subtrack-keep.vercel.app/)
+
 ![SubTrack Dashboard](https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=600&q=80) *(Placeholder image representing modern UI dashboards)*
 
 ---
@@ -68,7 +70,7 @@ Stores user-specific limits and preferences.
 ```sql
 create table public.user_settings (
   user_id uuid primary key references auth.users,
-  budget_limit numeric(10,2) default 200.00 not null,
+  budget_limit numeric(10,2) default 50000.00 not null,
   theme text default 'dark' not null,
   notifications jsonb default '[]'::jsonb not null
 );
